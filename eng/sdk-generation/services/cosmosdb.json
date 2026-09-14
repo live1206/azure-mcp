@@ -5,5 +5,5 @@
     "areas/cosmos/src/AzureMcp.Cosmos/AzureMcp.Cosmos.csproj"
   ],
   "selectionPolicy": "allOperationsForSelectedResource",
-  "outputDirectory": "sdk/generated/Azure.ResourceManager.CosmosDB"
+  "outputDirectory": "areas/cosmos/src/AzureMcp.Cosmos/GeneratedSdk"
 }

@@ -1,20 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsAotCompatible>true</IsAotCompatible>
-    <CosmosManagementSdkProject Condition="'$(CosmosManagementSdkProject)' == '' and '$(UseCosmosManagementSdkPackage)' != 'true'">$(MSBuildThisFileDirectory)..\..\..\..\sdk\generated\Azure.ResourceManager.CosmosDB\src\Azure.ResourceManager.CosmosDB.csproj</CosmosManagementSdkProject>
+    <NoWarn>$(NoWarn);SCM0005;CS8603</NoWarn>
+    <CosmosManagementSdkSource Condition="'$(CosmosManagementSdkSource)' == ''">$(MSBuildThisFileDirectory)GeneratedSdk\src</CosmosManagementSdkSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\Resources\*.txt" />
     <EmbeddedResource Include="**\Resources\*.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\core\src\AzureMcp.Core\AzureMcp.Core.csproj" />
-    <ProjectReference Include="$(CosmosManagementSdkProject)" Condition="'$(CosmosManagementSdkProject)' != ''" />
+    <Compile Remove="GeneratedSdk\src\**\*.cs" />
+    <Compile Include="$(CosmosManagementSdkSource)\Generated\**\*.cs;$(CosmosManagementSdkSource)\Shared\**\*.cs;$(CosmosManagementSdkSource)\Custom\**\*.cs;$(CosmosManagementSdkSource)\Properties\**\*.cs" Condition="'$(UseCosmosManagementSdkPackage)' != 'true'" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\core\src\AzureMcp.Core\AzureMcp.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Core" />
     <PackageReference Include="Azure.ResourceManager" />
-    <PackageReference Include="Azure.ResourceManager.CosmosDB" Condition="'$(CosmosManagementSdkProject)' == ''" />
+    <PackageReference Include="Azure.ResourceManager.CosmosDB" Condition="'$(UseCosmosManagementSdkPackage)' == 'true'" />
     <PackageReference Include="Microsoft.Azure.Cosmos" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="ModelContextProtocol" />
