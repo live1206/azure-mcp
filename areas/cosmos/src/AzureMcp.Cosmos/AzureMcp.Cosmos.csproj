@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsAotCompatible>true</IsAotCompatible>
+    <CosmosManagementSdkProject Condition="'$(CosmosManagementSdkProject)' == '' and '$(UseCosmosManagementSdkPackage)' != 'true'">$(MSBuildThisFileDirectory)..\..\..\..\sdk\generated\Azure.ResourceManager.CosmosDB\src\Azure.ResourceManager.CosmosDB.csproj</CosmosManagementSdkProject>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\Resources\*.txt" />
@@ -8,11 +9,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\core\src\AzureMcp.Core\AzureMcp.Core.csproj" />
+    <ProjectReference Include="$(CosmosManagementSdkProject)" Condition="'$(CosmosManagementSdkProject)' != ''" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <PackageReference Include="Azure.ResourceManager" />
-    <PackageReference Include="Azure.ResourceManager.CosmosDB" />
+    <PackageReference Include="Azure.ResourceManager.CosmosDB" Condition="'$(CosmosManagementSdkProject)' == ''" />
     <PackageReference Include="Microsoft.Azure.Cosmos" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="ModelContextProtocol" />
